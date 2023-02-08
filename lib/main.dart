@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:dios_lesson/repository/main_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'model/Coin.dart';
@@ -36,6 +38,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final MainRepository mainRepository = MainRepository();
 
   void _incrementCounter() {
     setState(() {
@@ -45,22 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    getResponseWithDio("James");
+    getInformation();
     super.initState();
   }
 
-  getResponseWithDio(String nameText) async {
-    Dio _dio = Dio(BaseOptions(
-      baseUrl: "https://api.genderize.io",
-    ));
-    try {
-      var response = await _dio.get('/?name=$nameText');
-      print(response.data.toString());
-      Name name = Name.fromJson(response.data);
-      print(name.name);
-    } catch (e) {
-      print(e);
-    }
+  getInformation() async {
+    var res = await mainRepository.getNameInformation("Jabik", context);
+    print(res);
   }
 
   @override
